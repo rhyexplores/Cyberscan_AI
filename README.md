@@ -4,7 +4,7 @@
 
 CyberScan AI is a supervised machine learning project that classifies network traffic as **Benign** or **Malicious** using the **NSL-KDD dataset**.
 
-The project covers the complete ML pipeline: **data preprocessing, feature selection, model training, evaluation, and deployment using Streamlit.**
+The project covers the complete ML pipeline: **data preprocessing, feature selection, model training, evaluation, and interactive deployment using Streamlit.**
 
 ---
 
@@ -77,11 +77,11 @@ These features represent **data transfer, connection frequency, service behavior
 
 ### Random Forest
 
-Used as the **main classification model** because it can learn complex relationships between network features.
+Used as the **main classification model** to learn patterns in network traffic and classify connections as benign or malicious.
 
 ### SVM
 
-Used as a **comparison model** to evaluate another classification approach.
+Used as a **comparison model** to evaluate another supervised classification approach.
 
 ---
 
@@ -93,19 +93,24 @@ The models are evaluated using:
 * **Precision**
 * **Recall**
 * **F1-Score**
+* **Classification Report**
 
-The Random Forest evaluation results are also stored in `model_metrics.json`.
+The Random Forest evaluation results are saved in:
+
+```text
+model_metrics.json
+```
 
 ---
 
 ## 🖥️ Streamlit Application
 
-The application, **CyberScan AI**, allows users to:
+The **CyberScan AI** application allows users to:
 
 * Enter the 15 network features
 * Predict **Benign / Malicious** traffic
 * View prediction probabilities
-* Visualize the traffic using PCA
+* Visualize the traffic using **PCA**
 * Try predefined normal and attack scenarios
 
 ---
@@ -115,19 +120,15 @@ The application, **CyberScan AI**, allows users to:
 ```text
 CyberScan-AI/
 │
-├── train_test.py          # Training & evaluation
-├── savepoints.py          # Saves visualization samples
+├── train_test.py          # Data preprocessing, training & evaluation
 ├── app.py                 # Streamlit application
 │
-├── rf_model.pkl           # Trained Random Forest
+├── rf_model.pkl           # Trained Random Forest model
 ├── scaler.pkl             # Saved feature scaler
 ├── selected_features.pkl  # Selected 15 features
-├── model_metrics.json     # Evaluation metrics
-│
-├── X_sample.pkl
-├── y_sample.pkl           # Visualization data
-├── X_sample.npy
-└── y_sample.npy
+├── X_sample.pkl           # Sample data for PCA visualization
+├── y_sample.pkl           # Sample labels for PCA visualization
+└── model_metrics.json     # Model evaluation metrics
 ```
 
 ---
@@ -153,19 +154,15 @@ CyberScan-AI/
 pip install pandas numpy scikit-learn joblib datasets streamlit matplotlib
 ```
 
-### 2. Train the models
+### 2. Train the model
 
 ```bash
 python train_test.py
 ```
 
-### 3. Save visualization samples
+This generates the required model, scaler, feature-selection, visualization, and metric files.
 
-```bash
-python savepoints.py
-```
-
-### 4. Launch the application
+### 3. Launch the application
 
 ```bash
 streamlit run app.py
@@ -176,15 +173,16 @@ streamlit run app.py
 ## ⚠️ Limitations
 
 * Uses the NSL-KDD benchmark dataset rather than live network traffic.
-* Current application requires manual feature input.
-* Performance depends on the quality and types of attacks represented in the dataset.
+* The current application requires manual feature input.
+* The model only performs **binary classification**: Benign vs Malicious.
+* Performance depends on the types of attacks represented in the training dataset.
 
 ---
 
 ## 🔮 Future Scope
 
 * Real-time network packet capture
-* Automatic feature extraction
+* Automatic feature extraction from network traffic
 * Real-time attack alerts
 * Multi-class attack detection
 * Model explainability
